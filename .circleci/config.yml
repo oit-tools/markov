@@ -1,0 +1,51 @@
+version: 2.1
+
+orbs:
+  python: circleci/python@2.0.3
+
+jobs:
+  build:
+    docker:
+      - image: cimg/python:3.10.1
+    steps:
+      - checkout
+      - python/install-packages:
+          pkg-manager: pip
+
+      - run:
+          name: Install dependencies
+          command: |
+            python -m pip install --upgrade pip
+            pip install -r ./requirements.txt
+            python -m unidic download
+
+      - run:
+          name: Create dot env file
+          shell: bash
+          command: |
+            touch .env
+            echo "CK=$CK" >> .env
+            echo "CS=$CS" >> .env
+            echo "AT=$AT" >> .env
+            echo "AS=$AS" >> .env
+            echo "BT=$BT" >> .env
+
+      - run:
+          name: Run tweet.py
+          command: python ./tweet.py
+
+workflows:
+  version: 2
+  BOT:
+
+    triggers:
+      - schedule:
+          cron: "59 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,21,22,23 * * *" # 7時~25時で1時間ごとに実行(JST)
+          filters:
+            branches:
+              only:
+                - master
+
+    jobs:
+      - build:
+          context: MarkovAPI
