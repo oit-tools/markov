@@ -49,7 +49,7 @@ def get_tweets():
 # 文字列を整える
 def format_text(text):
     # NG.txtを読み込む
-    with open("NG.txt", "r", encoding="utf-8") as f:
+    with open("ng.txt", "r", encoding="utf-8") as f:
         ng_word = f.read().splitlines()
     breaking_chars = ["(", ")", "[", "]", '"', "'"]
 
