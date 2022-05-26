@@ -34,7 +34,7 @@ def parse_texts(normalized_texts):
 
 # 文章生成
 def gen_sentence(parsed_text):
-    STATE_SIZE = 1
+    STATE_SIZE = 3
     model = markovify.NewlineText(parsed_text, state_size=STATE_SIZE)
     sentence = None
 
@@ -52,7 +52,7 @@ def gen_sentence(parsed_text):
 
 def main():
     # ツイートを取得
-    texts = collect.main()
+    texts , count = collect.main()
     # 正規化
     parsed_text = parse_texts(normalization(texts))
     # 文章生成
@@ -60,7 +60,8 @@ def main():
 
     # 表示
     print(sentence, end="")
-    print("["+str(len(sentence))+"文字]")
+    print("["+str(len(sentence))+"文字]", end="")
+    print("[解析ツイート数: "+str(count) + "]")
 
     return sentence
 

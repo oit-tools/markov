@@ -12,8 +12,9 @@ def get_tweets():
     client = tweepy.Client(bearer_token=os.environ["BT"])
     OITWC_LIST_ID = "1516921724033728512"
     token = None
+    count = 0
     text_list = list()
-    GET_TWEET_LIMIT = 100  # 取得するツイートの上限
+    # GET_TWEET_LIMIT = 100  # 取得するツイートの上限
 
     while True:
         tweets = client.get_list_tweets(
@@ -32,10 +33,12 @@ def get_tweets():
             text = format_text(text)
             # リストに追加
             text_list.append(text)
+            # 取得したツイート数をカウント
+            count += 1
 
             # ツイート取得数が上限に達したらループを抜ける
-            if i >= GET_TWEET_LIMIT:
-                break
+            # if i >= GET_TWEET_LIMIT:
+            #     break
 
         # ツイート取得数が上限に達していない場合は次のページを取得
         try:
@@ -43,7 +46,7 @@ def get_tweets():
         except KeyError:
             break
 
-    return text_list
+    return text_list , count
 
 
 # 文字列を整える
@@ -69,9 +72,9 @@ def format_text(text):
 
 def main():
     # ツイートを取得
-    text_list = get_tweets()
+    text_list , count = get_tweets()
 
-    return text_list
+    return text_list , count
 
 
 if __name__ == "__main__":
