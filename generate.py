@@ -34,7 +34,7 @@ def parse_texts(normalized_texts):
 
 # 文章生成
 def gen_sentence(parsed_text):
-    STATE_SIZE = 3
+    STATE_SIZE = 2
     model = markovify.NewlineText(parsed_text, state_size=STATE_SIZE)
     sentence = None
 
